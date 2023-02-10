@@ -1,0 +1,24 @@
+{
+	"name": "nestjs-validator",
+	"version": "1.0.0",
+	"description": "Validate DPB NestJS course solution",
+	"main": "index.js",
+	"scripts": {
+		"challenge1": "mocha test/challenge1.spec.js",
+		"challenge2": "mocha test/challenge2.spec.js",
+		"challenge3": "mocha test/challenge3.spec.js"
+	},
+	"keywords": [
+		"supertest"
+	],
+	"author": "Javier Meza",
+	"license": "ISC",
+	"devDependencies": {
+		"chai": "^4.3.4",
+		"mocha": "^8.4.0",
+		"supertest": "^6.1.3"
+	},
+	"dependencies": {
+		"mochawesome": "^7.0.1"
+	}
+}
