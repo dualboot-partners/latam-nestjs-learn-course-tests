@@ -4,7 +4,7 @@ const expect = require("chai").expect;
 const baseUrl = "http://localhost:3000/api/v1";
 
 describe("Testing challenge #3", () => {
-  it("find - should return a Dog object", (done) => {
+  it("findOne - should return a Dog object", (done) => {
     request(baseUrl)
       .get(`/dog/${1}`)
       .set("Accept", "application/json")
@@ -33,10 +33,10 @@ describe("Testing challenge #3", () => {
       });
   });
 
-  it("findOne - find - should return a Dog object", (done) => {
+  it("find - should return a Dog object", (done) => {
     request(baseUrl)
-      .get("/dog/findOne")
-      .query({ race: "German shepherd", age: 1 })
+      .get("/dog")
+      .query({ race: "German shepherd", age: 11 })
       .set("Accept", "application/json")
       .set("Content-Type", "application/json")
       .end(function (err, res) {
@@ -44,7 +44,7 @@ describe("Testing challenge #3", () => {
         expect(res.body).to.be.instanceOf(Object);
         expect(res.body).to.haveOwnProperty("id");
         expect(res.body).to.haveOwnProperty("race").eq("German shepherd");
-        expect(res.body).to.haveOwnProperty("age").eq(1);
+        expect(res.body).to.haveOwnProperty("age").eq(11);
         expect(res.body).to.haveOwnProperty("color").eq("black");
         done();
       });

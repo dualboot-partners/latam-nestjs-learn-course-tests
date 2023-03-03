@@ -4,7 +4,7 @@ const expect = require("chai").expect;
 const baseUrl = "http://localhost:3000/api/v1";
 
 describe("Testing challenge #2", () => {
-  it("find - should return a Dog object", (done) => {
+  it("findOne - should return a Dog object", (done) => {
     request(baseUrl)
       .get(`/dog/${2}`)
       .set("Accept", "application/json")
@@ -33,9 +33,9 @@ describe("Testing challenge #2", () => {
       });
   });
 
-  it("findOne - find - should return a Dog object", (done) => {
+  it("find - should return all Dog objects filtered by race and age", (done) => {
     request(baseUrl)
-      .get("/dog/findOne")
+      .get("/dog")
       .query({ race: "Pitbull", age: 10 })
       .set("Accept", "application/json")
       .set("Content-Type", "application/json")
@@ -99,7 +99,7 @@ describe("Testing challenge #2", () => {
       .set("Content-Type", "application/json")
       .end(function (err, res) {
         expect(res.statusCode).to.be.equal(200);
-        expect(res.text).to.be.string("Dog deleted succesfully");
+        expect(res.text).to.be.string("Dog deleted successfully");
       });
 
     request(baseUrl)
