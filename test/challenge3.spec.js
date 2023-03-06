@@ -1,30 +1,55 @@
-const request = require("supertest");
-const expect = require("chai").expect;
+const request = require('supertest');
+const expect = require('chai').expect;
 
-const baseUrl = "http://localhost:3000/api/v1";
+const baseUrl = 'http://localhost:3000/api/v1';
 
-describe("Testing challenge #3", () => {
-  it("find - should return a Dog object", (done) => {
+let dogId1, dogId2;
+
+describe('Testing challenge #3', () => {
+  beforeEach((done) => setTimeout(done, 500));
+
+  it('Inserting data', (done) => {
     request(baseUrl)
-      .get(`/dog/${1}`)
-      .set("Accept", "application/json")
-      .set("Content-Type", "application/json")
+      .post(`/dog`)
+      .send({ breed: 'German shepherd', age: 11, color: 'black' })
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .end(function (err, res) {
-        expect(res.statusCode).to.be.equal(200);
-        expect(res.body).to.be.instanceOf(Object);
-        expect(res.body).to.haveOwnProperty("id");
-        expect(res.body).to.haveOwnProperty("race");
-        expect(res.body).to.haveOwnProperty("age");
-        expect(res.body).to.haveOwnProperty("color");
+        dogId1 = res.body.id;
+      });
+
+    request(baseUrl)
+      .post(`/dog`)
+      .send({ breed: 'Pitbull', age: 5, color: 'white' })
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .end(function (err, res) {
+        dogId2 = res.body.id;
         done();
       });
   });
 
-  it("findAll - should return an array of Dogs object", (done) => {
+  it('findOne - should return a Dog object', (done) => {
     request(baseUrl)
-      .get("/dog")
-      .set("Accept", "application/json")
-      .set("Content-Type", "application/json")
+      .get(`/dog/${dogId1}`)
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .end(function (err, res) {
+        expect(res.statusCode).to.be.equal(200);
+        expect(res.body).to.be.instanceOf(Object);
+        expect(res.body).to.haveOwnProperty('id');
+        expect(res.body).to.haveOwnProperty('breed').eq('German shepherd');
+        expect(res.body).to.haveOwnProperty('age').eq(11);
+        expect(res.body).to.haveOwnProperty('color').eq('black');
+        done();
+      });
+  });
+
+  it('findAll - should return an array of Dogs object', (done) => {
+    request(baseUrl)
+      .get('/dog')
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .end(function (err, res) {
         expect(res.statusCode).to.be.equal(200);
         expect(res.body).to.be.instanceOf(Array);
@@ -33,19 +58,35 @@ describe("Testing challenge #3", () => {
       });
   });
 
-  it("findOne - find - should return a Dog object", (done) => {
+  it('find - should return an array of Dog object matching criteria', (done) => {
     request(baseUrl)
-      .get("/dog/findOne")
-      .query({ race: "German shepherd", age: 1 })
-      .set("Accept", "application/json")
-      .set("Content-Type", "application/json")
+      .get('/dog')
+      .query({ breed: 'German shepherd', age: 10 })
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .end(function (err, res) {
         expect(res.statusCode).to.be.equal(200);
         expect(res.body).to.be.instanceOf(Object);
-        expect(res.body).to.haveOwnProperty("id");
-        expect(res.body).to.haveOwnProperty("race").eq("German shepherd");
-        expect(res.body).to.haveOwnProperty("age").eq(1);
-        expect(res.body).to.haveOwnProperty("color").eq("black");
+        expect(res.body).to.haveOwnProperty('id');
+        expect(res.body).to.haveOwnProperty('breed').eq('German shepherd');
+        expect(res.body).to.haveOwnProperty('age').eq(11);
+        expect(res.body).to.haveOwnProperty('color').eq('black');
+        done();
+      });
+  });
+
+  it('Erasing data', (done) => {
+    request(baseUrl)
+      .delete(`/dog/${dogId1}`)
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .end(function (err, res) {});
+
+    request(baseUrl)
+      .delete(`/dog/${dogId2}`)
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .end(function (err, res) {
         done();
       });
   });
