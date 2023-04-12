@@ -66,7 +66,7 @@ describe('Testing challenge #3', () => {
       .set('Content-Type', 'application/json')
       .end(function (err, res) {
         expect(res.statusCode).to.be.equal(200);
-        expect(res.body).to.be.instanceOf(Array); //here
+        expect(res.body).to.be.instanceOf(Array);
         expect(res.body[0]).to.haveOwnProperty('id');
         expect(res.body[0]).to.haveOwnProperty('breed').eq('German shepherd');
         expect(res.body[0]).to.haveOwnProperty('age').eq(11);
