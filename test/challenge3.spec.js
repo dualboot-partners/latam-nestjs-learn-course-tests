@@ -58,7 +58,7 @@ describe('Testing challenge #3', () => {
       });
   });
 
-  it('find - should return an array of Dog object matching criteria', (done) => {
+  it('find - should return an array of Dogs object matching criteria', (done) => {
     request(baseUrl)
       .get('/dog')
       .query({ breed: 'German shepherd', age: 10 })
@@ -66,11 +66,11 @@ describe('Testing challenge #3', () => {
       .set('Content-Type', 'application/json')
       .end(function (err, res) {
         expect(res.statusCode).to.be.equal(200);
-        expect(res.body).to.be.instanceOf(Object);
-        expect(res.body).to.haveOwnProperty('id');
-        expect(res.body).to.haveOwnProperty('breed').eq('German shepherd');
-        expect(res.body).to.haveOwnProperty('age').eq(11);
-        expect(res.body).to.haveOwnProperty('color').eq('black');
+        expect(res.body).to.be.instanceOf(Array); //here
+        expect(res.body[0]).to.haveOwnProperty('id');
+        expect(res.body[0]).to.haveOwnProperty('breed').eq('German shepherd');
+        expect(res.body[0]).to.haveOwnProperty('age').eq(11);
+        expect(res.body[0]).to.haveOwnProperty('color').eq('black');
         done();
       });
   });
